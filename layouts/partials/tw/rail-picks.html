@@ -1,0 +1,42 @@
+<div
+  class="mt-6 rounded bg-s-3 p-6 shadow"
+  style="
+    background-color: {{ .backgroundColor }};
+    --hed-color: {{ .linkColor }};
+    --dek-color: {{ .linkColor }};
+    --byline-color: {{ .linkColor }};
+    --credit-color: {{ .linkColor }};
+  "
+  data-ga-category="editors-pick"
+>
+  <h2
+    class="text-center font-sans text-base font-bold uppercase leading-none tracking-wider text-orange"
+    style="color: {{ .labelColor }};"
+  >
+    {{ .label }}
+  </h2>
+
+  {{ $name := .page.Param "image" }}
+  {{ $credit := .page.Param "image-credit" }}
+  {{ $description := .page.Param "image-description" }}
+  {{ $imgOpts := dict
+    "filename" $name
+    "credit" $credit
+    "description" $description
+    "link" .params.link
+    "widthRatio" 16
+    "heightRatio" 9
+    "widths" (slice 128 256 384 512 1280)
+    "figClass" "mt-1"
+    "sizeHint" "256px"
+    "gravity" (.page.Param "image-gravity")
+  }}
+  {{ partial "tw/thumb-v-item.html" (dict
+    "wrapperClass" "mt-6 mx-auto sm:w-64"
+    "imgOpts" $imgOpts
+    "link" .page.RelPermalink
+    "hed" .page.LinkTitle
+    "byline" .params.byline
+    )
+  }}
+</div>

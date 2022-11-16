@@ -1,0 +1,206 @@
+[[main]]
+name = "Investigations"
+url = "/investigations/"
+weight = 1
+
+[[main]]
+name = "Events"
+url = "/topics/events/"
+weight = 2
+
+[[main]]
+name = "Newsletters"
+url = "/newsletters/"
+weight = 3
+
+[[main]]
+name = "About Us"
+url = "/about/"
+weight = 4
+
+[[main]]
+name = "Tips"
+url = "/tips/"
+weight = 5
+
+[[main]]
+name = "State College"
+url = "/statecollege/"
+weight = 6
+
+[[footer]]
+name = "Home"
+url = "/"
+weight = 1
+
+[[footer]]
+name = "Contact"
+url = "/contact/"
+weight = 2
+
+[[footer]]
+name = "Tips"
+url = "/tips/"
+weight = 3
+
+[[footer]]
+name = "Newsletters"
+url = "/newsletters/"
+weight = 4
+
+[[footer]]
+name = "News Archive"
+url = "/news/"
+weight = 5
+
+[[footer]]
+name = "Search"
+url = "/search/"
+weight = 6
+
+[footer.params]
+dispatch = "modal:search:open"
+
+[[footer]]
+name = "Special Projects & Investigations"
+url = "/investigations/"
+weight = 7
+
+[[footer]]
+name = "Topic Archive"
+url = "/topics/"
+weight = 8
+
+[[footer]]
+name = "Events"
+url = "/events/"
+weight = 9
+
+[[footer]]
+name = "Donate"
+url = "/donate/"
+weight = 10
+
+[[about]]
+name = "About State College"
+url = "/about/statecollege/"
+weight = 1
+
+[[about]]
+name = "State College"
+url = "/statecollege/"
+weight = 2
+
+[[about]]
+name = "About Us"
+url = "/about/"
+weight = 3
+
+[[about]]
+name = "Our Mission"
+url = "/about/mission/"
+weight = 4
+
+[[about]]
+name = "Supporters"
+url = "/support/"
+weight = 5
+
+[[about]]
+name = "Partners"
+url = "/about/partners/"
+weight = 6
+
+[[about]]
+name = "Staff"
+url = "/about/staff/"
+weight = 7
+
+[[about]]
+name = "Diversity"
+url = "/about/diversity/"
+weight = 8
+
+[[about]]
+name = "FAQ"
+url = "/about/faq/"
+weight = 9
+
+[[about]]
+name = "Jobs"
+url = "/about/jobs/"
+weight = 10
+
+[[tndmain]]
+name = "Sign Up for Newsletters"
+url = "/newsletters/"
+weight = 1
+
+[tndmain.params]
+dispatch = "modal:newsletters:open"
+
+[[tndmain]]
+name = "Investigations"
+url = "/investigations/"
+weight = 2
+
+[[tndmain]]
+name = "Events"
+url = "/topics/events/"
+weight = 3
+
+[[social]]
+name = "Facebook"
+url = "https://www.facebook.com/SpotlightPennsylvania"
+weight = 1
+
+[social.params]
+icon = "#fb-svg"
+
+[[social]]
+name = "Twitter"
+url = "https://www.twitter.com/SpotlightPA"
+weight = 2
+
+[social.params]
+icon = "#twitter-svg"
+
+[[social]]
+name = "Instagram"
+url = "https://www.instagram.com/Spotlightpennsylvania/"
+weight = 3
+
+[social.params]
+icon = "#ig-svg"
+
+[[social]]
+name = "Apple News"
+url = "https://apple.news/TJOxac5Y3SDWgviiNxcD9gA"
+weight = 4
+
+[social.params]
+icon = "#apple-svg"
+
+[[social]]
+name = "Flipboard"
+url = "https://flipboard.com/@SpotlightPA"
+weight = 5
+
+[social.params]
+icon = "#flip-svg"
+
+[[social]]
+name = "Github"
+url = "https://www.github.com/spotlightpa/"
+weight = 6
+
+[social.params]
+icon = "#gh-svg"
+
+[[social]]
+name = "Google News"
+url = "https://news.google.com/publications/CAAqBwgKMJOpkgswx-CnAw"
+weight = 7
+
+[social.params]
+icon = "#google-svg"

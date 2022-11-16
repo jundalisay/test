@@ -1,0 +1,155 @@
+{{ $icon := .Param "logo" | resources.Get | fingerprint }}
+{{ $params := partialCached "helper/page-params" .Page .RelPermalink }}
+
+{{ $pageType := "WebPage" }}
+{{ $isArticle := false }}
+{{ if $params.byline }}
+  {{ $isArticle = true }}
+  {{ $pageType = "Article" }}
+{{ end }}
+
+{{ $image := "" }}
+{{ with .Param "image" }}
+  {{ $imgOpt := dict
+    "filename" .
+    "width" 1200
+    "height" 900
+    "gravity" ($.Param "image-gravity")
+  }}
+  {{ $image = partial "helper/imgproxy" $imgOpt | absURL }}
+{{ end }}
+
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": {{ $pageType }},
+  "description": {{ .Description }},
+  "name": {{ $params.seoTitle }},
+
+  {{ if $isArticle }}"headline": {{ .Title }},{{ end }}
+  {{ with $params.publishedISO }}"datePublished": {{ . }},{{ end }}
+  {{ if $isArticle }}"wordcount": {{ .WordCount }},{{ end }}
+  {{ with $image}}"image": {{ . }},{{ end }}
+  "author": [
+    {{ with .Param "authors" }}
+      {{ range $i, $name := . }}
+        {{ if ne $i 0 }},{{ end }}
+        {{ $author := partial "helper/get-author" $name }}
+        {
+          {{ with $author.name }}"name": "{{ . }}",{{ end }}
+          {{ with $author.title }}"jobTitle": "{{ . }}",{{ end }}
+          {{ with $author.link }}"url": "{{ . | absURL }}",{{ end }}
+          "@type": "Person"
+        }
+      {{ end }}
+    {{ end }}
+  ],
+  "publisher": {
+    "@type": "Organization",
+    "name": {{ site.Title }},
+    "url": {{ site.BaseURL }},
+    "location": {
+      "@type": "Place",
+      "name": "Pennsylvania"
+    },
+    "logo": {
+      "@type": "ImageObject",
+      "contentUrl": {{ $icon.Permalink }},
+      "url": {{ $icon.Permalink }}
+    }
+  }
+}
+</script>
+
+<!-- -->
+
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Organization",
+  "name": {{ site.Title }},
+  "url": {{ site.BaseURL }},
+  "logo": {{ $icon.Permalink }},
+  "foundingDate": 2019,
+  "location": {
+    "@type": "Place",
+    "name": "Pennsylvania"
+  },
+  "sameAs": [
+    {{ range $i, $m := site.Menus.social }}
+      {{ if ne $i 0 }},{{ end }}
+      {{ .URL }}
+    {{ end }}
+  ]
+}
+</script>
+
+<!-- -->
+
+{{ $parents := partialCached "helper/find-parents" . .RelPermalink }}
+
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {{ range $i, $page := $parents }}
+      {{ if ne $i 0 }},{{ end }}
+      {
+        "@type": "ListItem",
+        "@id": {{ .Permalink }},
+        "item": {{ .Permalink }},
+        "name": {{ .LinkTitle }},
+        "position": {{ add 1 $i }}
+      }
+    {{ end }}
+  ]
+}
+</script>
+
+<!-- -->
+
+{{ if $params.eventDateISO }}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Event",
+      "description": {{ .Description }},
+      "name": {{ .Param "event-title" | default $params.seoTitle }},
+      {{ with $image}}"image": {{ . }},{{ end }}
+      "startDate": {{ $params.eventDateISO }},
+      "endDate": {{ $params.eventDateISO }},
+      "eventStatus": "eventScheduled",
+      {{ with .Param "event-url" }}
+        "eventAttendanceMode": "OnlineEventAttendanceMode",
+        "location": {
+          "@type": "VirtualLocation",
+          "url": {{ . }}
+        },
+      {{ else }}
+        "location": {
+          "@type": "Place",
+          "name": "Pennsylvania",
+          "address": {
+            "@type": "PostalAddress",
+            "addressRegion": "PA"
+          }
+        },
+      {{ end }}
+      "organizer": {
+        "@type": "Organization",
+        "name": {{ site.Title }},
+        "url": {{ site.BaseURL }},
+        "location": {
+          "@type": "Place",
+          "name": "Pennsylvania"
+        },
+        "logo": {
+          "@type": "ImageObject",
+          "contentUrl": {{ $icon.Permalink }},
+          "url": {{ $icon.Permalink }}
+        }
+      }
+    }
+  </script>
+{{ end }}

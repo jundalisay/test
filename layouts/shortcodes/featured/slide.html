@@ -1,0 +1,61 @@
+{{ $src := .Get "src" | htmlUnescape }}
+{{ $credit := .Get "credit" | htmlUnescape }}
+{{ $description := .Get "description" | htmlUnescape }}
+{{ $caption := .Get "caption" | htmlUnescape }}
+{{ $capClass := .Get "caption-class" | htmlUnescape | default "p-2 text-s-8 text-xs xl:text-sm" }}
+
+{{ $widths := slice 500 800 1100 1400 1700 2100 }}
+{{ $sizes := dict "widths" $widths "widthRatio" 16 "heightRatio" 9 | partial "helper/build-sizes" }}
+{{ $srcset := dict "sizes" $sizes "filename" $src | partial "helper/build-srcset" }}
+
+{{ $width := (index $sizes 0).width }}
+{{ $height := (index $sizes 0).height }}
+{{ $imgOpt := dict
+  "filename" $src
+  "width" $width
+  "height" $height
+  "ext" "jpeg"
+}}
+{{ $imgSmallSrc := partial "helper/imgproxy" $imgOpt }}
+
+{{ $id := partial "helper/new-id" . }}
+
+
+<figure
+  class="group w-5/6 flex-none snap-center px-2 pb-2 focus:outline-none sm:px-8"
+  :class="{'cursor-pointer': currentSlide !== +$el.dataset.slideId }"
+  x-intersect:enter.full="currentSlide = +$el.dataset.slideId"
+  data-slide-id="{{ .Ordinal }}"
+  @focus="center($event.currentTarget)"
+  tabindex="0"
+  data-ga-category="slide"
+  data-ga-button
+  data-ga-action="slider:focus"
+>
+  <div class="relative h-0 w-full pb-16x9">
+    <picture
+      class="
+        absolute inset-0 block
+        overflow-hidden rounded
+        bg-s-3 transition-shadow duration-300
+        group-focus:shadow-md
+      "
+    >
+      <source type="image/webp" srcset="{{ $srcset }}" />
+      <img
+        class="h-auto w-full"
+        alt="{{ $description }}"
+        title="{{ $description }}"
+        src="{{ $imgSmallSrc }}"
+        draggable="false"
+        decode="async"
+        loading="lazy"
+        :loading="loadingMode"
+      />
+    </picture>
+  </div>
+  <figcaption class="{{ $capClass }} select-text">
+    {{ $caption }}
+    {{ $credit }}
+  </figcaption>
+</figure>

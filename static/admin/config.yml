@@ -1,0 +1,472 @@
+media_folder: assets/img/uploads
+public_folder: /img/uploads
+
+site_url: https://www.spotlightpa.org
+display_url: https://www.spotlightpa.org
+logo_url: https://www.spotlightpa.org/img/logos/banner-share-5000.png
+
+show_preview_links: true
+
+backend:
+  name: github
+  repo: spotlightpa/poor-richard
+  branch: master
+
+yaml-definitions: &page-fields
+  - label: Draft
+    name: draft
+    widget: boolean
+    hint: "Content will not show up on site, but will be publically available on Github. Do not save embargoed material."
+    default: true
+    required: false
+  - label: "Featured Image"
+    name: "image"
+    widget: string
+    hint: "Path from Almanack"
+    required: false
+  - label: Image description
+    name: image-description
+    widget: string
+    required: false
+  - label: Image credit
+    name: image-credit
+    widget: string
+    required: false
+  - label: "Image size"
+    name: "image-size"
+    widget: "select"
+    options: ["full", "inline", "letterbox", "hidden"]
+    required: false
+  - label: Date
+    name: published
+    widget: datetime
+    required: false
+  - label: Slug
+    name: slug
+    widget: string
+    required: false
+    hint: "If unset, URL will use hed/title. Do not change hed without setting slug."
+  - label: Authors
+    label_singular: author
+    name: authors
+    widget: list
+    default: []
+    field:
+      label: Name
+      name: ""
+      hint: "Full name as listed in data profile"
+      widget: string
+  - label: Byline
+    name: byline
+    hint: "If present, overrides the byline created from authors list"
+    widget: string
+    required: false
+  - label: Hed
+    name: title
+    hint: "Title as it appears at top of page"
+    widget: string
+  - label: Subhed
+    name: subhed
+    widget: string
+    hint: "Appears below hed at top of page; AKA dek"
+    required: false
+  - label: Summary
+    name: description
+    hint: "Shown in social share previews and search results"
+    widget: string
+    required: false
+  - label: Blurb
+    name: blurb
+    hint: "Short summary to appear in article rivers"
+    widget: string
+    required: false
+  - label: Kicker
+    name: kicker
+    hint: "Small text appearing above the page headline, e.g. Health"
+    widget: string
+    required: false
+  - label: Body
+    name: body
+    widget: markdown
+  - label: "Override title tag"
+    name: title-tag
+    widget: string
+    hint: "Set title tag separately from page hed"
+    required: false
+  - label: Link to as
+    name: linktitle
+    hint: "When linking to this page from another page, use this as the link title instead of hed"
+    widget: string
+    required: false
+  - label: Suppress in featured slot
+    name: suppress-featured
+    widget: boolean
+    hint: "Don't make this the top story on the homepage"
+    default: false
+    required: false
+  - label: "Override order number"
+    name: weight
+    widget: number
+    required: false
+    hint: "Use this to manually order stories on the homepage"
+  - label: Topics
+    label_singular: topic
+    name: topics
+    widget: list
+    hint: "Topics tags, e.g. Coronavirus"
+    default: []
+    field:
+      label: Name
+      name: ""
+      widget: string
+  - label: Series
+    label_singular: series
+    name: series
+    widget: list
+    hint: "For articles in a series, provide a series name"
+    default: []
+    field:
+      label: Name
+      name: ""
+      widget: string
+  - label: "Suppress title"
+    name: suppress-title
+    widget: boolean
+    hint: "Don't show title in content area"
+    required: false
+  - label: "Hide newsletters pop-up"
+    name: modal-exclude
+    widget: boolean
+    hint: "Don't show newsletters modal screen on this page"
+    required: false
+  - label: "No index"
+    name: no-index
+    hint: "Hide page on Google etc."
+    widget: boolean
+    required: false
+  - label: "Override URL"
+    name: url
+    widget: string
+    required: false
+  - label: Aliases
+    label_singular: alias
+    name: aliases
+    widget: list
+    default: []
+    field:
+      label: Path
+      name: path
+      widget: string
+  - label: type
+    name: type
+    widget: hidden
+    required: false
+  - label: section
+    name: section
+    widget: hidden
+    required: false
+
+yaml-definitions2: &taxonomy-fields
+  - label: Date
+    name: published
+    widget: datetime
+    hint: "Publish date for series as a whole"
+    required: false
+  - label: "Featured Image"
+    name: "image"
+    widget: string
+    hint: "Path from Almanack"
+    required: false
+  - label: Image description
+    name: image-description
+    widget: string
+    required: false
+  - label: Image credit
+    name: image-credit
+    widget: string
+    required: false
+  - label: "Image size"
+    name: "image-size"
+    widget: "select"
+    options: ["full", "inline", "letterbox", "hidden"]
+    required: false
+  - label: Kicker
+    name: kicker
+    hint: "Eyebrow for this collection in the list of collections"
+    widget: string
+    required: false
+  - label: Hed
+    name: title
+    hint: "Title as it appears at top of page"
+    widget: string
+  - label: Subhed
+    name: subhed
+    widget: string
+    hint: "Appears below hed at top of page; AKA dek"
+    required: false
+  - label: "Override title tag"
+    name: title-tag
+    widget: string
+    hint: "Set title tag separately from page hed"
+    required: false
+  - label: Link to as
+    name: linktitle
+    hint: "When linking to this page from the collections list, use this as the link title instead of hed"
+    widget: string
+    required: false
+  - label: Summary
+    name: description
+    hint: "Shown in social share previews and search results"
+    widget: string
+    required: false
+  - label: Link to story
+    name: link
+    hint: "Link to an individual page URL instead of a collection landing"
+    widget: string
+    required: false
+  - label: Body
+    name: body
+    widget: markdown
+    required: false
+
+collections:
+  - label: Root pages
+    name: content
+    folder: content
+    filter: { field: "type", value: "root" }
+    format: toml-frontmatter
+    extension: md
+    create: true
+    slug: "{{url}}"
+    preview_path: "/{{slug}}/"
+    editor:
+      preview: false
+    fields: *page-fields
+  - label: About pages
+    name: about
+    folder: content/about
+    format: toml-frontmatter
+    extension: md
+    create: true
+    slug: "{{url}}"
+    preview_path: "/about/{{slug}}/"
+    editor:
+      preview: false
+    fields: *page-fields
+  - label: Newsletters
+    name: newsletters
+    folder: content/newsletters
+    format: toml-frontmatter
+    extension: md
+    create: false
+    slug: "{{url}}"
+    preview_path: "/newsletters/{{slug}}/"
+    editor:
+      preview: false
+    fields: *page-fields
+  - label: "Press Releases"
+    label_singular: "Press Release"
+    name: press-releases
+    folder: content/press-releases
+    format: toml-frontmatter
+    extension: md
+    create: true
+    preview_path: "/press-releases/{{slug}}/"
+    editor:
+      preview: false
+    fields: *page-fields
+  - label: Authors
+    label_singular: Author
+    name: authors
+    folder: data/authors
+    format: toml
+    extension: toml
+    create: true
+    slug: "{{name}}"
+    preview_path: /about/staff/
+    identity_field: name
+    editor:
+      preview: false
+    fields:
+      - label: Full display name
+        name: name
+        widget: string
+      - label: First name
+        name: firstName
+        widget: string
+      - label: Family name
+        name: lastName
+        widget: string
+      - label: Title
+        name: title
+        widget: string
+      - label: Email
+        name: email
+        widget: string
+        required: false
+      - label: Twitter
+        name: twitter
+        widget: string
+        required: false
+      - label: Phone
+        name: tel
+        widget: string
+        required: false
+      - label: Signal
+        name: signal
+        widget: string
+        required: false
+      - label: Headshot
+        name: headshot
+        widget: string
+        hint: "Path from Almanack photos"
+        required: false
+      - label: Beat
+        name: beat
+        widget: string
+        hint: "Label before a reporter's name on staff page"
+        required: false
+      - label: Focus
+        name: focusHed
+        widget: string
+        hint: "Short label for the reporter's focus area"
+        required: false
+      - label: Focus description
+        name: focus
+        widget: markdown
+        hint: "Longer explanation of focus area"
+        required: false
+      - label: Bio
+        name: content
+        widget: markdown
+      - label: Reporter
+        name: reporter
+        hint: "Should this author be listed with the reporters (as opposed to editors or other staff)?"
+        widget: boolean
+        required: false
+      - label: Active
+        name: active
+        hint: "Is this author still working for Spotlight PA?"
+        widget: boolean
+        required: true
+  - label: Topics
+    label_singular: Topic
+    name: topics
+    folder: content/topics
+    path: "{{slug}}/_index"
+    format: toml-frontmatter
+    extension: md
+    create: true
+    summary: "{{title}}"
+    editor:
+      preview: false
+    fields: *taxonomy-fields
+  - label: Series
+    label_singular: series
+    name: series
+    folder: content/series
+    path: "{{slug}}/_index"
+    format: toml-frontmatter
+    extension: md
+    create: true
+    summary: "{{title}}"
+    editor:
+      preview: false
+    fields: *taxonomy-fields
+
+  - label: Other
+    name: data
+    editor:
+      preview: false
+    files:
+      - label: "Supporters"
+        name: supporters
+        file: data/supporters.json
+        format: json
+        fields:
+          - label: "List of supporters"
+            name: list
+            widget: supporters
+      - label: "News landing page"
+        name: news-landing
+        file: content/news/_index.md
+        format: toml-frontmatter
+        fields:
+          - label: Title
+            name: title
+            widget: string
+          - label: Description
+            name: description
+            widget: string
+          - label: Body
+            name: body
+            widget: markdown
+      - label: "Press release landing page"
+        name: press-release
+        file: content/press-releases/_index.md
+        format: toml-frontmatter
+        fields:
+          - label: Title
+            name: title
+            widget: string
+          - label: Description
+            name: description
+            widget: string
+          - label: Body
+            name: body
+            widget: markdown
+      - label: Menus
+        name: menus
+        file: config/_default/menus.toml
+        fields:
+          - label: "Main menu items"
+            label_singular: "menu item"
+            name: main
+            hint: "Navbar main menu"
+            widget: list
+            fields: &menu
+              - label: "Display Name"
+                name: name
+                widget: string
+                required: true
+              - label: URL
+                name: url
+                widget: string
+                required: true
+              - label: Order
+                name: weight
+                widget: number
+                valueType: int
+                required: false
+          - label: "Footer menu items"
+            label_singular: "menu item"
+            name: footer
+            hint: "Footer pages list, first column"
+            widget: list
+            fields: *menu
+          - label: "Footer about menu items"
+            label_singular: "menu item"
+            name: about
+            hint: "Footer pages list, about column"
+            widget: list
+            fields: *menu
+          - label: "Social menu items"
+            label_singular: "menu item"
+            name: social
+            hint: "Footer social links"
+            widget: list
+            fields: *menu
+  - label: Articles
+    label_singular: Article
+    name: news
+    folder: content/news
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    format: toml-frontmatter
+    extension: md
+    create: true
+    preview_path: "/news/{{year}}/{{month}}/{{fields.slug}}/"
+    preview_path_date_field: published
+    summary: "{{title}} ({{published}}) {{fields.slug}}"
+    editor:
+      preview: false
+    fields: *page-fields

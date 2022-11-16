@@ -1,0 +1,100 @@
+{{ define "main" }}
+  {{ $author  := partial "helper/get-author" .Title }}
+  <section class="section" data-ga-category="author">
+    <article class="columns is-centered is-multiline">
+      <div class="column is-three-fifths">
+        <header class="block">
+          <div class="is-clearfix">
+            <div class="is-pulled-right">
+              {{ partial "component/breadcrumbs.html" . }}
+            </div>
+          </div>
+
+          {{ if $author.active }}
+            <div class="media">
+              {{ if $author.thumb }}
+                <div class="media-left is-hidden-mobile">
+                  <figure class="image is-128x128">
+                    <img
+                      src="{{ $author.thumb }}"
+                      alt="Photo of {{ $author.name }}"
+                      class="is-rounded"
+                    />
+                  </figure>
+                </div>
+              {{ end }}
+              <div class="media-content">
+                <h1 class="title is-3 has-text-weight-semibold">
+                  {{ $author.name }}
+                </h1>
+                <p class="subtitle is-4">{{ $author.title }}</p>
+                <p class="subtitle is-5 has-text-break-all">
+                  {{ with $author.email }}
+                    <span class="icon has-text-link">
+                      <svg viewBox="0 0 1 1">
+                        <use xlink:href="#email-svg"></use>
+                      </svg>
+                    </span>
+                    <a data-ga-category="author-email" href="mailto:{{ . }}">
+                      {{ . }}
+                    </a>
+                  {{ end }}
+                  {{ with (and $author.email $author.twitter) }}
+                    <br />
+                  {{ end }}
+                  {{ with $author.twitter }}
+                    <span class="icon has-text-link">
+                      <svg viewBox="0 0 1 1">
+                        <use xlink:href="#twitter-svg"></use>
+                      </svg>
+                    </span>
+                    <a
+                      data-ga-category="author-twitter"
+                      href="https://www.twitter.com/{{ . }}"
+                    >
+                      @{{ . }}
+                    </a>
+                  {{ end }}
+                </p>
+              </div>
+            </div>
+          {{ else }}
+            <h1 class="title is-2 is-size-3-touch is-spaced">
+              {{ .Title }}
+            </h1>
+          {{ end }}
+        </header>
+
+        {{ if $author.active }}
+          <div class="content">
+            {{ $author.content|markdownify }}
+          </div>
+        {{ end }}
+      </div>
+    </article>
+  </section>
+{{ end }}
+
+{{ define "extra-main" }}
+  <div
+    class="column is-three-fifths is-offset-one-fifth"
+    data-ga-category="author"
+  >
+    <div class="tile is-ancestor is-vertical">
+      <div class="tile is-parent is-top">
+        <div class="tile is-child">
+          <h2 class="title is-4 is-uppercase has-text-weight-semibold">
+            Stories by
+            {{ .Title }}
+          </h2>
+          <hr class="is-emphatic-underline has-margin-top-negative" />
+        </div>
+      </div>
+      {{ range $page := .Paginator.Pages }}
+        {{ partialCached "tile/archive.html" $page $page.RelPermalink }}
+      {{ end }}
+    </div>
+
+    {{ partial "component/paginator-level.html" .Paginator }}
+  </div>
+{{ end }}

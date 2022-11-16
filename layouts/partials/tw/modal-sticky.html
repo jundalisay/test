@@ -1,0 +1,57 @@
+{{ $magicPixel := "data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" | safeURL }}
+{{ $alt := .Param "sticky-image-description" }}
+{{ $images := .Param "sticky-images" }}
+{{ $link := .Param "sticky-link" }}
+
+{{ $width := 0 }}
+{{ $height := 0 }}
+{{ $bgColor := "#000" }}
+<section
+  class="max-w-screen fixed bottom-0 right-0 z-10"
+  x-data="sticky"
+  x-show="isOpen"
+  x-transition:enter="transition ease-out duration-500"
+  x-transition:enter-start="opacity-0 transform translate-x-8"
+  x-transition:enter-end="opacity-100 transform translate-x-0"
+  x-transition:leave="transition ease-in duration-500"
+  x-transition:leave-start="opacity-100 transform translate-x-0"
+  x-transition:leave-end="opacity-0 transform translate-x-8"
+  @open-sticky.window="show()"
+  @close-sticky.window="close()"
+  data-ga-category="modal:sticky"
+  @keydown.escape="close"
+  x-cloak
+>
+  <button
+    type="button"
+    class="
+      absolute top-2 left-4 flex
+      h-6 w-6 rounded-full
+      bg-black bg-opacity-40 text-white
+      hover:text-yellow"
+    aria-label="close"
+    @click="close"
+    x-ref="close"
+  >
+    <svg class="m-auto h-4 w-4 fill-current">
+      <use xlink:href="#times-svg"></use>
+    </svg>
+  </button>
+  <div class="my-2 mx-4 flex p-4">
+    <a
+      class="flex ring-yellow focus:outline-none focus:ring-2"
+      @click.capture="close()"
+      @click.outside="close()"
+      href="/donate/"
+      ><img
+        class="rounded shadow-beige"
+        x-data="imageRotator(JSON.parse($el.dataset.images))"
+        data-images="{{ $images | jsonify }}"
+        src="{{ $magicPixel }}"
+        :src="choice"
+        alt="{{ $alt }}"
+        title="{{ $alt }}"
+        style="max-height: 40vh;"
+    /></a>
+  </div>
+</section>

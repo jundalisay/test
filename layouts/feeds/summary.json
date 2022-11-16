@@ -1,0 +1,27 @@
+{{- $news := site.GetPage "/news/_index.md" -}}
+{{- $sc := site.GetPage "/statecollege/_index.md" -}}
+{{- $stories := union $news.RegularPages $sc.RegularPages -}}
+{{- $stories = sort $stories ".PublishDate" "desc" -}}
+{
+  "items": [
+    {{ range $i, $p := first 800 $stories }}
+      {{- $params := partialCached "helper/page-params" .Page .RelPermalink -}}
+      {{ if ne $i 0 }},{{ end }}
+      {
+        "url": {{ .RelPermalink | jsonify }},
+        "title": {{ .LinkTitle | jsonify }},
+
+        "byline": {{ $params.byline | jsonify }},
+        "kicker": {{ $params.kicker | jsonify }},
+        "blurb": {{ $params.blurb | jsonify }},
+
+        "published": {{ $params.published | jsonify }},
+        "publishedISO": {{ $params.publishedISO | jsonify }},
+
+        "image": {{ .Param "image" | jsonify }},
+        "imageCredit": {{ .Param "image-credit" | jsonify }},
+        "imageDescription": {{ .Param "image-description" | jsonify }}
+      }
+    {{- end -}}
+  ]
+}

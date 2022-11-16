@@ -1,0 +1,64 @@
+{{ define "title" }}
+  <title>{{ .Param "title-tag" | default .LinkTitle }}</title>
+{{ end }}
+
+{{ define "nav" }}
+  {{ partial "tw/nav-sc.html" . }}
+{{ end }}
+
+{{ define "topper" }}
+  {{ if .Param "topper-active" }}
+    {{/* partialCached "component/topper.html" . */}}
+  {{ else if $topperStories := partial "helper/get-sc-picks" "topper" }}
+    {{ partial "component/topper-articlepromo.html" $topperStories }}
+  {{ end }}
+{{ end }}
+
+{{ define "main" }}
+  {{ $sc := site.GetPage "/statecollege/_index.md" }}
+
+  {{ $topperStories := partial "helper/get-sc-picks" "topper" }}
+  {{ $topperStory := first 1 $topperStories }}
+
+  {{ $featuredStory := partial "helper/get-sc-picks" "featuredStories" }}
+  {{ $featuredStory = last 1 $featuredStory }}
+
+  {{ $subfeatures := partial "helper/get-sc-picks" "subfeatures" }}
+  {{ $subfeatures = $subfeatures | complement $featuredStory }}
+
+  {{ $featuredStories := $featuredStory | append $subfeatures }}
+
+  {{ $pinnedStories := partial "helper/get-sc-picks" "topSlots" }}
+
+  {{ $paPost := site.GetPage "/newsletters/talkofthetown" }}
+  {{ $river := sort (union $paPost.RegularPages $sc.RegularPages) ".PublishDate" "desc" }}
+  {{ $river = $river | complement $featuredStory $pinnedStories $topperStory }}
+
+  {{ $hasPromo := .Param "promo-active" }}
+  {{ $marginClass := cond $hasPromo "has-margin-top-negative" "" }}
+  {{ if eq (len $featuredStory) 0 }}
+    {{ $marginClass = "mt-4" }}
+  {{ end }}
+
+  {{ $edPicks := partial "helper/get-items" "sidebar" }}
+
+
+  <div data-sf-campaign="7015G0000013pUYQAY" data-sf-theme="centrecounty">
+    <h1 class="is-sr-only">{{ .Title }}</h1>
+    {{ partial "component/frontpage" (dict
+      "featuredStories" $featuredStories
+      "pinnedStories" $pinnedStories
+      "river" $river
+      "marginClass" $marginClass
+      "page" .Page
+      )
+    }}
+  </div>
+{{ end }}
+
+{{ define "extra-footer" }}
+  {{ $svgs := dict
+    "banner-state-college-svg" "/img/logos/banner-state-college.svg"
+  }}
+  {{ partial "header/svgs.html" $svgs }}
+{{ end }}

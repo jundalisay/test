@@ -1,0 +1,147 @@
+{{ $subjects := slice
+  (slice "Addiction" "Ed Mahon")
+  (slice "Agriculture" "Stephen Kearse")
+  (slice "Child care" "Ed Mahon")
+  (slice "Courts (state or local)" "Danielle Ohl")
+  (slice "COVID-19" "Ed Mahon")
+  (slice "Crime" "Danielle Ohl")
+  (slice "Criminal Justice" "Danielle Ohl")
+  (slice "Economic Development" "Charlotte Keith")
+  (slice "Education" "Ed Mahon")
+  (slice "Elder care" "Ed Mahon")
+  (slice "Elected Officials" "Angela Couloumbis, Katie Meyer, Kate Huangpu")
+  (slice "Elections" "Angela Couloumbis, Katie Meyer, Kate Huangpu")
+  (slice "Environment" "Stephen Kearse")
+  (slice "Event suggestions" "Yaasmeen Piper, Stephen Kearse")
+  (slice "Health" "Ed Mahon")
+  (slice "Housing" "Charlotte Keith")
+  (slice "Human Services" "Ed Mahon")
+  (slice "Labor" "Stephen Kearse")
+  (slice "Law Enforcement" "Danielle Ohl")
+  (slice "Legislature" "Angela Couloumbis, Katie Meyer, Kate Huangpu")
+  (slice "Local Government" "Min Xian")
+  (slice "Newsletter suggestions" "Colin, Stephen Kearse")
+  (slice "Penn State University" "Wyatt Massey")
+  (slice "Politics" "Angela Couloumbis, Katie Meyer, Kate Huangpu")
+  (slice "Rural Issues" "Ashad Hajela")
+  (slice "Sports" "Stephen Kearse")
+  (slice "State College" "Sarah Rafacz")
+  (slice "State Government" "")
+  (slice "State Prisons" "Danielle Ohl")
+  (slice "Transportation" "")
+  (slice "Unemployment" "")
+  (slice "Voting" "Angela Couloumbis, Katie Meyer, Kate Huangpu")
+  (slice "Other" "")
+}}
+{{ $idURL := partial "helper/new-id" . }}
+{{ $idFrom := partial "helper/new-id" . }}
+{{ $idEmail := partial "helper/new-id" . }}
+{{ $idSubject := partial "helper/new-id" . }}
+{{ $idBody := partial "helper/new-id" . }}
+<form
+  id="contact-page-form"
+  name="contact-page"
+  class="control"
+  action="/contact/thanks/"
+  method="post"
+  netlify
+  netlify-honeypot="bot-field"
+  data-ga-form="contact"
+  data-ga-category="inline:contact"
+>
+  <p class="is-hidden">
+    <label>
+      Don’t fill this out if you're human: <input name="bot-field" />
+    </label>
+    <label class="label is-sr-only" for="{{ $idURL }}">Host URL</label>
+    <input
+      id="{{ $idURL }}"
+      class="input"
+      type="text"
+      name="host_page"
+      value="Spotlight PA"
+    />
+  </p>
+  <div class="field">
+    <label class="label" for="{{ $idFrom }}">From</label>
+  </div>
+  <div class="field is-horizontal">
+    <div class="field-body">
+      <div class="field">
+        <p class="control is-expanded">
+          <input
+            id="{{ $idFrom }}"
+            class="input"
+            type="text"
+            placeholder="William Penn"
+            name="name"
+            required
+          />
+        </p>
+      </div>
+      <div class="field">
+        <label class="is-sr-only" for="{{ $idEmail }}">Email</label>
+        <p class="control is-expanded has-icons-left has-icons-right">
+          <input
+            id="{{ $idEmail }}"
+            class="input"
+            type="email"
+            placeholder="williampenn@example.com"
+            name="email"
+            required
+          />
+          <span class="icon is-left has-text-primary">
+            <svg viewBox="0 0 1 1">
+              <use xlink:href="#email-svg"></use>
+            </svg>
+          </span>
+          <span class="icon is-right validator-icon">
+            <svg viewBox="0 0 1 1">
+              <use xlink:href="#check-svg"></use>
+            </svg>
+          </span>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="label" for="{{ $idSubject }}">Subject</label>
+    <div class="control is-expanded" x-data="{ cc: '' }">
+      <div class="select is-fullwidth">
+        <select
+          id="{{ $idSubject }}"
+          name="subject"
+          @input="cc = $el.options[$el.selectedIndex].dataset.cc"
+          required
+        >
+          <option selected disabled value="">Select a topic</option>
+          {{ range $subjects }}
+            {{ $subject := index . 0 }}
+            {{ $cc := index . 1 }}
+            <option data-cc="{{ $cc }}">{{ $subject }}</option>
+          {{ end }}
+        </select>
+        <input type="hidden" name="CC" :value="cc" />
+      </div>
+    </div>
+  </div>
+  <div class="field">
+    <label class="label" for="{{ $idBody }}">Comment</label>
+    <div class="control">
+      <textarea
+        id="{{ $idBody }}"
+        class="textarea"
+        placeholder="Explain how we can help you"
+        name="comment"
+      ></textarea>
+    </div>
+  </div>
+  <div class="field">
+    <div class="control">
+      <button class="button is-danger has-text-weight-semibold" type="submit">
+        Send comment
+      </button>
+    </div>
+  </div>
+</form>

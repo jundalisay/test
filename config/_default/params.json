@@ -1,0 +1,92 @@
+{
+  "banner": "Read the latest news from our first-ever regional bureau in State College  »",
+  "banner-active": false,
+  "banner-bg-color": "#c7e8f1",
+  "banner-link": "/statecollege",
+  "banner-text-color": "#000000",
+  "footer-promo-description": "Help raise $125,000 in support of Spotlight PA's vital investigative journalism for Pennsylvania as part of our end-of-year fundraising campaign.",
+  "footer-promo-desktop-height": 90,
+  "footer-promo-desktop-images": [
+    "https://files.data.spotlightpa.org/uploads/01hq/7b73/newsmatch-2022-banner-ads-728-90-px-.png"
+  ],
+  "footer-promo-desktop-width": 728,
+  "footer-promo-link": "/donate",
+  "footer-promo-mobile-height": 250,
+  "footer-promo-mobile-images": [
+    "https://files.data.spotlightpa.org/uploads/01hq/7bb6/newsmatch-2022-rectangles-1024-512-px-1-.png"
+  ],
+  "footer-promo-mobile-width": 500,
+  "newsletter-active": true,
+  "promo-active": false,
+  "promo-desktop-height": 90,
+  "promo-desktop-images": [
+    "https://files.data.spotlightpa.org/uploads/01hk/8yz2/rally-round-our-coverage-2022-desktop-site-graphic-728-90-px-1-.png"
+  ],
+  "promo-desktop-width": 728,
+  "promo-image-description": "Support Spotlight PA's vital election coverage ahead of Pennsylvania's high-stakes fall election.",
+  "promo-link": "/donate",
+  "promo-mobile-height": 250,
+  "promo-mobile-images": [
+    "https://files.data.spotlightpa.org/uploads/01hk/8yz1/week-of-giving-2022-rectangles-1024-512-px-6-.png"
+  ],
+  "promo-mobile-width": 500,
+  "promo-text": "Spotlight PA's vital investigative journalism depends on your support. It's that simple. Contribute now.",
+  "promo-type": "image",
+  "river-promo-description": "Help raise $125,000 in support of Spotlight PA's vital investigative journalism for Pennsylvania as part of our end-of-year fundraising campaign.",
+  "river-promo-desktop-height": 90,
+  "river-promo-desktop-images": [
+    "https://files.data.spotlightpa.org/uploads/01hq/7b73/newsmatch-2022-banner-ads-728-90-px-.png"
+  ],
+  "river-promo-desktop-width": 728,
+  "river-promo-link": "/donate",
+  "river-promo-mobile-height": 250,
+  "river-promo-mobile-images": [
+    "https://files.data.spotlightpa.org/uploads/01hq/7bb6/newsmatch-2022-rectangles-1024-512-px-1-.png"
+  ],
+  "river-promo-mobile-width": 500,
+  "sidebar-sticky-description": "Help raise $125,000 in support of Spotlight PA's vital investigative journalism for Pennsylvania as part of our end-of-year fundraising campaign.",
+  "sidebar-sticky-height": 250,
+  "sidebar-sticky-images": [
+    "https://files.data.spotlightpa.org/uploads/01hq/7b72/newsmatch-2022-squares-9-.png"
+  ],
+  "sidebar-sticky-link": "/donate",
+  "sidebar-sticky-width": 300,
+  "sidebar-top-description": "Help raise $125,000 in support of Spotlight PA's vital investigative journalism for Pennsylvania as part of our end-of-year fundraising campaign.",
+  "sidebar-top-height": 250,
+  "sidebar-top-images": [
+    "https://files.data.spotlightpa.org/uploads/01hq/7b72/newsmatch-2022-squares-9-.png"
+  ],
+  "sidebar-top-link": "/donate",
+  "sidebar-top-width": 300,
+  "sticky-active": true,
+  "sticky-image-description": "Help raise $125,000 in support of Spotlight PA's vital investigative journalism for Pennsylvania as part of our end-of-year fundraising campaign.",
+  "sticky-images": [
+    "https://files.data.spotlightpa.org/uploads/01hq/7b72/newsmatch-2022-squares-9-.png"
+  ],
+  "sticky-link": "/donate",
+  "support-active": true,
+  "support-bg-color": "#ffffff",
+  "support-button-bg-color": "#ff0000",
+  "support-button-text-color": "#ffffff",
+  "support-cta": "YES, I WILL CONTRIBUTE »",
+  "support-hed": "CAN WE COUNT ON YOUR SUPPORT?",
+  "support-hed-color": "#ff0000",
+  "support-link": "/donate/",
+  "support-text": "Huge stories will shape Pennsylvania’s future next year, and now is the time to make an end-of-year investment in Spotlight PA’s unique, independent investigative reporting. Our work cannot continue into 2023 and beyond without your support..\n\n\u003cstrong\u003eThis week only, all new monthly gifts will be matched at 12X their value. That means a $15/month gift will unlock a $180 bonus!\u003c/strong\u003e\n\nUnlike many others, Spotlight PA has no shareholders, no billionaire owner, no pressure to turn a big profit. Just the determination and passion to deliver high-impact investigative and public-service reporting for Pennsylvania, always free from commercial or political influence. \n\nWe provide our journalism for free, for everyone to read, because we believe in information equality. Greater numbers of people can keep track of the issues and events shaping our state, understand their impact on people and communities, and become inspired to take meaningful action. Millions can benefit from open access to quality, truthful news, regardless of their ability to pay for it.\n\nEvery contribution, however big or small, powers our journalism in tight economic times and sustains our future. As you consider your end-of-year giving, please support Spotlight PA by making a tax-deductible gift today. \u003cstrong\u003eAnd don't forget: All new monthly gifts made this week will be matched 12X as part of one of our biggest matching offers of the year! Lock in your bonus now.\u003c/strong\u003e\n\nCan we count on your support of this important work?",
+  "support-text-color": "#000000",
+  "topper-active": true,
+  "topper-bg-color": "#4c50e9",
+  "topper-desktop-height": 225,
+  "topper-desktop-images": [
+    "https://files.data.spotlightpa.org/uploads/01hq/7b72/newsmatch-2022-tracker-banners-1-.svg"
+  ],
+  "topper-desktop-width": 1350,
+  "topper-divider-color": "#ff0000",
+  "topper-image-description": "Help raise $125,000 in support of Spotlight PA's vital investigative journalism for Pennsylvania as part of our end-of-year fundraising campaign.",
+  "topper-link": "/donate/",
+  "topper-mobile-height": 512,
+  "topper-mobile-images": [
+    "https://files.data.spotlightpa.org/uploads/01hq/7b71/newsmatch-2022-rectangles-1024-512-px-2-.svg"
+  ],
+  "topper-mobile-width": 1024
+}

@@ -1,0 +1,5 @@
+buildDrafts = false
+buildFuture = true
+
+[privacy.googleAnalytics]
+    disable = false

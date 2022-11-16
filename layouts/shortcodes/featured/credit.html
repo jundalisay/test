@@ -1,0 +1,56 @@
+{{ $eyebrow := .Get "eyebrow" }}
+{{ $name := .Get "name" }}
+{{ $image := .Get "image" }}
+{{ $role := .Get "role" }}
+{{ $email := .Get "email" }}
+{{ $author := partial "helper/get-author" $name }}
+
+<div class="font-sans">
+  {{ if $eyebrow }}
+    <h4 class="uppercase font-bold text-xs mb-4">{{ $eyebrow }}</h4>
+  {{ end }}
+  {{ if $image }}
+    {{ $imgOpt := dict
+      "filename" $image
+      "width" 256
+      "height" 256
+    }}
+    {{ $thumb := partial "helper/imgproxy" $imgOpt }}
+    {{ with $author.link }}<a href="{{ . }}">{{ end}}
+    <img
+      class="float-left mr-4 w-16 h-16 rounded-full filter grayscale"
+      src="{{ $thumb }}"
+      alt="Picture of {{ $name }}"
+    >
+    {{ with $author.link }}</a>{{ end}}
+  {{ else if $author.thumb }}
+    {{ with $author.link }}<a href="{{ . }}">{{ end}}
+    <img
+      class="float-left mr-4 w-16 h-16 rounded-full filter grayscale"
+      src="{{ $author.thumb }}"
+      alt="Picture of {{ $name }}"
+    >
+    {{ with $author.link }}</a>{{ end}}
+  {{ end }}
+  <h3 class="uppercase font-bold">
+    {{ with $author.link }}
+      <a
+        href="{{ . }}"
+        class="hover:text-yellow transition-colors duration-500"
+      >
+    {{ end}}
+    {{ $name }}
+    {{ with $author.link }}</a>{{ end}}
+  </h3>
+  {{ if $role }}
+    <div class="text-sm italic">{{ $role }}</div>
+  {{ end }}
+  {{ if $email }}
+    <div class="text-sm">
+      <a
+        class="underline text-navy hover:text-yellow transition-colors duration-500"
+        href="mailto:{{ $email }}"
+      >{{ $email }}</a>
+    </div>
+  {{ end }}
+</div>

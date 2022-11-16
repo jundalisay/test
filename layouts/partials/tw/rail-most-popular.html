@@ -1,0 +1,40 @@
+<div
+  class="rounded border border-s-4 p-6 shadow"
+  x-data="mostPopular"
+  x-show="hasLoaded"
+  x-cloak
+  data-ga-category="most-popular"
+>
+  <link
+    rel="preload"
+    as="fetch"
+    crossorigin
+    href="https://files.data.spotlightpa.org/feeds/most-popular-items.json"
+    x-ref="mostPopSrc"
+  />
+  <h2
+    class="text-center font-sans text-base font-bold uppercase leading-none tracking-wider text-orange"
+  >
+    Most Popular Stories
+  </h2>
+  <nav class="has-text-dark">
+    <template x-for="(story, i) of stories">
+      <a
+        class="group mt-6 flex"
+        :href="story.url_path"
+        @click.capture="$report($event)"
+      >
+        <span
+          class="mr-4 w-6 flex-shrink-0 font-sans text-3xl font-bold leading-none text-s-6"
+          x-text="i + 1"
+          data-ga-category="ranking"
+        ></span>
+        <span
+          class="tracking-tight text-black group-hover:underline"
+          data-ga-category="hed"
+          x-text="story.title"
+        ></span>
+      </a>
+    </template>
+  </nav>
+</div>

@@ -1,0 +1,98 @@
+{{ $widths := .widths }}
+{{ $imagename := .filename | default "2019/11/banner-white-on-capitol.jpeg" }}
+{{ $widthR := .widthRatio | default 16 }}
+{{ $heightR := .heightRatio | default 9 }}
+{{ $imgClass := printf "is-%dby%d" $widthR $heightR }}
+{{ $credit := .credit }}
+{{ $eager := .eager | default false }}
+{{ $gravity := .gravity }}
+{{ $rounded := cond (.rounded|not|not) "rounded" "" }}
+{{ $creditClass := .creditClass | default "mt-1 w-full px-1 text-right font-sans text-sm uppercase leading-tight text-credit" }}
+
+{{ $sizes :=  partial "helper/build-sizes" (dict
+  "widths" $widths
+  "widthRatio" $widthR
+  "heightRatio" $heightR
+  )
+}}
+{{ $srcset := partial "helper/build-srcset" (dict
+  "sizes" $sizes
+  "filename" $imagename
+  "gravity" $gravity
+  )
+}}
+
+{{ $width := (index $sizes 0).width }}
+{{ $height := (index $sizes 0).height }}
+{{ $padding := slice $widthR $heightR | partial "helper/aspect-ratio" }}
+{{ $imgOpt := dict
+  "filename" $imagename
+  "width" $width
+  "height" $height
+  "gravity" $gravity
+}}
+{{ $imgSmallSrc := partial "helper/imgproxy" $imgOpt }}
+
+
+<figure
+  class="{{ .figClass }}"
+  data-ga-category="thumb"
+  itemscope
+  itemtype="https://schema.org/ImageObject"
+>
+  <div
+    class="{{ $rounded }} relative w-full overflow-clip bg-s-3 shadow"
+    {{ if .overlay }}
+      x-data="{ showOverlay: true }"
+    {{ end }}
+  >
+    {{ partial "tag/picture-maybe-link.html" (dict
+      "link" .link
+      "wrapperClass" "block"
+      "pictureClass" (printf "flex aspect-[%d/%d]" .widthRatio .heightRatio)
+      "imgClass" "flex h-full w-full object-cover"
+      "sizeHint" .sizeHint
+      "eager" $eager
+      "description" .description
+      "srcset" $srcset
+      "src" $imgSmallSrc
+      "width" $width
+      "height" $height
+      )
+    }}
+    {{ if .overlay }}
+      <figcaption
+        class="
+          {{ if .rounded }}rounded-b overflow-clip{{ end }}
+          backdrop-fallback absolute inset-x-0 bottom-0 p-4
+          font-sans text-base text-s-0
+          backdrop-blur-sm backdrop-brightness-50 backdrop-filter
+        "
+        x-show="showOverlay"
+        x-transition.opacity
+        itemprop="caption"
+      >
+        {{- .overlay -}}
+      </figcaption>
+      <div
+        class="absolute inset-0 cursor-pointer"
+        @click="$report($event); showOverlay = !showOverlay"
+        data-ga-action="image:toggle-overlay"
+      ></div>
+    {{ end }}
+  </div>
+
+  {{ with $credit }}
+    <div class="{{ $creditClass }}" itemprop="creditText">
+      {{ $credit }}
+    </div>
+  {{ end }}
+  {{ with .caption }}
+    <figcaption
+      class="mt-6 font-sans leading-tight text-s-8"
+      itemprop="caption"
+    >
+      {{- . -}}
+    </figcaption>
+  {{ end }}
+</figure>

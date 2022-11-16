@@ -1,0 +1,87 @@
+{{ define "promo" }}
+  <!-- noop -->
+{{ end }}
+
+{{ define "topper" }}
+  <!-- noop -->
+{{ end }}
+
+{{ define "main" }}
+  {{ $date := now }}
+  {{ $showDate := false }}
+  {{ $sixMonthsAgo := now.AddDate 0 -6 0 }}
+  {{ range first 1 .Pages }}
+    {{ $date = .Date }}
+    {{ $showDate = $date.Before $sixMonthsAgo | and (not .Date.IsZero) }}
+  {{ end }}
+  {{ if isset .Params "show-date" }}
+    {{ $showDate = .Param "show-date" }}
+  {{ end }}
+  {{ $showItemDates := .Param "show-item-dates" }}
+
+  {{ $subtitle := .Param "subhed" | default .Description }}
+
+  {{ $p := .Paginator 30 }}
+  {{ $pages := $p.Pages }}
+  {{ if .Param "reverse-cron" }}
+    {{ $p = dict }}
+    {{ $pages = .Pages.ByPublishDate.Reverse }}
+  {{ end }}
+  {{ if .Param "by-title" }}
+    {{ $p = dict }}
+    {{ $pages = .Pages.ByTitle }}
+  {{ end }}
+
+  {{ $titleClass := cond (gt (countwords .Title) 2) "is-size-1" "is-size-0" }}
+  {{ $subheadClass := cond (gt (countwords $subtitle) 15) "is-size-4" "is-size-3" }}
+  <section
+    class="section columns is-centered is-multiline"
+    data-ga-category="list"
+  >
+    <div class="column is-three-fifths">
+      <header class="mb-5">
+        {{ partial "component/hero-image-block.html" . }}
+
+        {{ if $showDate }}
+          <p
+            class="tag is-square is-black is-uppercase has-text-weight-semibold mb-2"
+          >
+            {{ $date.Format "January 2006" }}
+          </p>
+        {{ end }}
+        <h1
+          class="title has-text-centered {{ $titleClass }} is-size-2-touch is-spaced"
+        >
+          {{ .Title }}
+        </h1>
+        <h2
+          class="subtitle has-text-centered {{ $subheadClass }} is-size-4-touch mb-6"
+        >
+          {{ $subtitle }}
+        </h2>
+      </header>
+      {{ with .Content }}
+        <div class="content mb-6">
+          {{ . }}
+        </div>
+      {{ end }}
+    </div>
+    <div class="column is-four-fifths mb-6">
+      <nav class="tile is-ancestor is-vertical">
+        <div class="tile is-wrapped">
+          {{ range $page := $pages }}
+            <div class="tile is-parent is-4 has-margin-top-negative">
+              <div class="tile is-child">
+                {{ $props :=  dict "Page" $page.Page "showDate" $showItemDates }}
+                {{ partialCached "tile/list.html" $props $page.RelPermalink $showItemDates }}
+              </div>
+            </div>
+          {{ end }}
+        </div>
+      </nav>
+    </div>
+    <div class="column is-three-fifths">
+      {{ partial "component/paginator-level.html" $p }}
+    </div>
+  </section>
+{{ end }}

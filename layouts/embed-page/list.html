@@ -1,0 +1,119 @@
+{{ define "extra-main" }}
+  {{ $hostJS := resources.Get "js/esbuild/embed-host.js" }}
+  {{ $jsOpts := dict "minify" true }}
+  {{ $hostJS = $hostJS | js.Build $jsOpts }}
+  {{ $hostJS = $hostJS | minify }}
+  {{/* Use resources.Concat to remove .min. from the URL */}}
+  {{ $hostJS = slice $hostJS | resources.Concat "/embed.js" }}
+  {{ $scriptSrc := $hostJS.Permalink }}
+  <section
+    class="section columns is-centered is-multiline"
+    data-ga-category="embed-list"
+  >
+    <div class="column is-three-fifths">
+      {{ range $page := .Pages }}
+        {{ if .Param "hide-embed-list" | not }}
+          {{ $params := .Param "page-query-params" }}
+          {{ $page := dict
+            "url" .Permalink
+            "title" .Title
+            "params" $params
+            "scriptSrc" $scriptSrc
+          }}
+          <div
+            class="box has-background-light"
+            x-data="embedList({
+              url: $el.dataset.url,
+              scriptSrc: $el.dataset.scriptSrc
+            })"
+            data-url="{{ .Permalink }}"
+            data-script-src="{{ $scriptSrc }}"
+          >
+            <h2 class="title is-spaced">{{ .Title }}</h2>
+            <div class="block">
+              {{ if $params }}
+                <h2 class="subtitle is-4">Parameters:</h2>
+                {{ range $param := $params }}
+                  <div class="field">
+                    <label for="{{ $param.name }}-field" class="label">
+                      {{ $param.hint }}
+                    </label>
+                    <div class="control">
+                      <input
+                        id="{{ $param.name }}-field"
+                        placeholder="{{ $param.placeholder }}"
+                        type="text"
+                        class="input"
+                        name="{{ $param.name }}"
+                        @input.debounce.500ms="updateParams"
+                        {{ with $param.pattern }}
+                          pattern="{{ . }}"
+                          @blur="$event.currentTarget.reportValidity()"
+                        {{ end }}
+                      />
+                    </div>
+                  </div>
+                {{ end }}
+              {{ end }}
+
+
+              <h3 class="subtitle is-4">Code:</h3>
+              <div class="mb-5" description="embed code">
+                <div class="field">
+                  <div class="control">
+                    <div
+                      rows="bulmaoverride"
+                      contenteditable="true"
+                      class="textarea pre-wrap"
+                      x-text="embedCode"
+                    ></div>
+                  </div>
+                </div>
+                <div class="field">
+                  <div class="buttons">
+                    <button
+                      type="button"
+                      title="Copy"
+                      class="button is-primary has-text-weight-semibold"
+                      @click="copy()"
+                    >
+                      <span class="icon">
+                        {{ $iconCopy := resources.Get "@fontawesome/regular/copy.svg" }}
+                        {{ $iconCopy.Content|safeHTML }}
+                      </span>
+                      <span> Copy text </span>
+                    </button>
+                    <div
+                      x-cloak
+                      x-show="showCopied"
+                      x-transition:enter="fade-enter-active"
+                      x-transition:enter-start="fade-enter"
+                      x-transition:leave="fade-leave-active"
+                      x-transition:leave-end="fade-leave-to"
+                      class="tag is-rounded is-success is-light has-text-weight-semibold"
+                    >
+                      Copied
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <h3 class="subtitle is-4">Sample:</h3>
+            <div x-ref="code">
+              {{ partial "component/embed-code.html" $page }}
+            </div>
+          </div>
+        {{ end }}
+      {{ end }}
+    </div>
+  </section>
+{{ end }}
+
+{{ define "extra-footer" }}
+  {{ $jsOpts := dict "minify" true "targetPath" "/tracker.js" }}
+  {{ $trackerJS := resources.Get "js/esbuild/tracker.js" | js.Build $jsOpts }}
+  {{ $trackerJS = $trackerJS | babel }}
+  <!-- Hack to tell Hugo to build the partner tracker JS -->
+  <div data-tracker-src="{{ $trackerJS.RelPermalink }}"></div>
+{{ end }}

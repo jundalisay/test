@@ -1,0 +1,29 @@
+{{- $items := slice -}}
+{{- $news := site.GetPage "/news/_index.md" -}}
+{{- $sc := site.GetPage "/statecollege/_index.md" -}}
+{{- $stories := union $news.RegularPages $sc.RegularPages -}}
+{{- $stories = sort $stories ".PublishDate" "desc" -}}
+{{- range first 15 $stories -}}
+  {{- $date := .Date.Format "2006-01-02T15:04:05Z07:00" -}}
+  {{- $item := dict
+    "id" .Permalink
+    "url" .Permalink
+    "title" .Title
+    "date_published" $date
+    "author" (.Param "byline")
+    "authors" (.Param "authors")
+    "content_html" .Content
+  -}}
+  {{- $items = append $item $items -}}
+{{- end -}}
+
+{{- $json := dict
+  "version" "https://jsonfeed.org/version/1.1"
+  "title" site.Title
+  "description" site.Home.Description
+  "home_page_url" site.Home.Permalink
+  "feed_url" .Permalink
+  "items" $items
+-}}
+
+{{- $json | jsonify -}}

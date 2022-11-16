@@ -1,0 +1,80 @@
+{{ $byline := "" }}
+{{ with .Param "authors" }}
+  {{ $byline = delimit . ", " " and " }}
+{{ end }}
+{{ with .Param "byline" }}
+  {{ $byline = . }}
+{{ end }}
+
+{{ $kicker := .Param "kicker" }}
+{{ $rubric := dict }}
+{{ $exKicker := .Param "extended-kicker" | default "Top News" }}
+
+{{ if and .Parent .Parent.Parent }}
+  {{ $rubric = .Parent }}
+{{ end }}
+
+{{ $topic := "" }}
+{{ if .Param "topics" }}
+  {{ $topic = index (.GetTerms "topics") 0 }}
+  {{ $rubric = $topic }}
+{{ end }}
+
+{{ $series := dict }}
+{{ if .Param "series" }}
+  {{ $series = index (.GetTerms "series") 0 }}
+  {{ $rubric = $series }}
+{{ end }}
+
+{{ if and (eq $kicker "") $rubric }}
+  {{ $kicker = $rubric.LinkTitle }}
+{{ end }}
+
+{{ $blurb := .Param "blurb" | default "" }}
+
+{{ $evergreen := .Param "suppress-date" }}
+
+{{ $isoFormat := "2006-01-02T15:04:05Z07:00" }}
+
+{{ $pubDate := "" }}
+{{ $pubDateISO := "" }}
+{{ with .PublishDate }}
+  {{ $pubDate = partial "helper/date-apstyle" .Local }}
+  {{ $pubDateISO = .Format $isoFormat }}
+{{ end }}
+
+{{ $eventDate := "" }}
+{{ $eventDateISO := "" }}
+{{ with .Param "event-date" }}
+  {{ $eventDate = partial "helper/date-apstyle" .Local }}
+  {{ $eventDateISO = .Format $isoFormat }}
+{{ end }}
+
+{{ $link := .RelPermalink }}
+{{ if eq .Page.Kind "term" }}
+  {{ if eq (len .Pages) 1 }}
+    {{ $page := index .Pages 0 }}
+    {{ $link = $page.RelPermalink }}
+  {{ end }}
+{{ end }}
+{{ with .Param "link" }}
+  {{ $link = . }}
+{{ end }}
+{{ $params := dict
+  "byline" $byline
+  "kicker" $kicker
+  "extendedKicker" $exKicker
+  "blurb" $blurb
+  "topic" $topic
+  "series" $series
+  "rubric" $rubric
+  "link" $link
+  "published" $pubDate
+  "publishedISO" $pubDateISO
+  "eventDate" $eventDate
+  "eventDateISO" $eventDateISO
+  "evergreen" $evergreen
+  "seoTitle" (.Param "title-tag" | default .LinkTitle)
+}}
+
+{{ return $params }}

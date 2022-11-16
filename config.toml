@@ -1,0 +1,139 @@
+baseURL = "https://www.spotlightpa.org/"
+languageCode = "en-us"
+title = "Spotlight PA"
+enableRobotsTXT = true
+enableGitInfo = true
+rssLimit = 50
+Paginate = 50
+
+googleAnalytics = "UA-141126362-1"
+
+[markup]
+  defaultMarkdownHandler = "goldmark"
+
+[markup.goldmark.extensions]
+  definitionList = false
+  footnote = false
+  linkify = false
+  strikethrough = false
+  table = false
+  taskList = false
+  typographer = true
+
+[markup.goldmark.renderer]
+  unsafe = true
+
+[privacy.googleAnalytics]
+    anonymizeIP = true
+    disable = false
+    respectDoNotTrack = true
+    useSessionStorage = true
+
+[taxonomies]
+  author = "authors"
+  series = "series"
+  topic = "topics"
+
+[frontmatter]
+    date  = [":default", ":filename"]
+    publishDate  = [":default", ":filename"]
+
+[permalinks]
+    press-releases = ":section/:year/:slug/"
+    news = ":section/:year/:month/:slug/"
+    statecollege = ":section/:year/:month/:slug/"
+
+[mediaTypes."text/netlify"]
+    delimiter = ""
+
+[outputFormats.json]
+    mediaType = "application/json"
+    isPlainText = true
+
+[outputFormats.csv]
+    mediaType = "text/csv"
+    isPlainText = true
+
+[outputFormats.redirects]
+mediatype = "text/netlify"
+baseName = "_redirects"
+isPlainText = true
+notAlternative = true
+
+[outputFormats.headers]
+mediatype = "text/netlify"
+baseName = "_headers"
+isPlainText = true
+notAlternative = true
+
+[outputs]
+    home = ["html", "redirects", "headers"]
+    section = ["html"]
+
+[params]
+    imgproxy = "/imgproxy/"
+    title = "Spotlight PA"
+    logo = "/img/logos/circle-black-on-trans-920.png"
+    favicon = "/img/logos/favicon.svg"
+    touch-icon = "/img/logos/square-white-on-black-920.png"
+    images = [
+        "2019/11/banner-white-on-capitol.jpeg"
+    ]
+    description = "The mission of Spotlight PA is to hold powerful private and public forces across Pennsylvania — especially government, business and special interests — to account through urgent and compelling investigative journalism that leads to change and the betterment of democracy, the state and all who live here."
+    headers = ["X-Frame-Options: DENY"]
+    newsletters-action = "https://email-alerts.data.spotlightpa.org/api/subscribe"
+
+[security.exec]
+allow = [
+  '^dart-sass-embedded$', '^go$', '^npx$', '^postcss$', '^babel$'
+]
+
+[security.funcs]
+getenv = ["^HUGO_", "^IMGPROXY_URL$"]
+
+[[module.mounts]]
+source = "assets"
+target = "assets"
+
+[[module.mounts]]
+source = "tailwind.config.js"
+target = "assets/tailwind.config.js"
+
+[[module.mounts]]
+source = "src"
+target = "assets/js"
+
+[[module.mounts]]
+source = "node_modules/@fortawesome/fontawesome-free/svgs"
+target = "assets/@fontawesome"
+
+[[module.mounts]]
+source = "static"
+target = "static"
+
+[related]
+includeNewer = true
+
+[[related.indices]]
+  name  = "series"
+  weight = 200
+
+[[related.indices]]
+  name = "topic"
+  weight = 200
+
+[[related.indices]]
+  name = "title"
+  weight = 150
+
+[[related.indices]]
+  name = "date"
+  weight = 150
+
+[[related.indices]]
+  name  = "kicker"
+  weight = 100
+
+[[related.indices]]
+  name  = "authors"
+  weight = 100

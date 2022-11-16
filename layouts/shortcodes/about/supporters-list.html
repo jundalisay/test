@@ -1,0 +1,7 @@
+<div class="supporters-list">
+  <ul>
+    {{ range sort site.Data.supporters.list "sort" "asc" }}
+      <li>{{ .display }}</li>
+    {{ end }}
+  </ul>
+</div>
